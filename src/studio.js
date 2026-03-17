@@ -179,10 +179,17 @@ function initDownload() {
   $downloadModal.querySelector('.header').appendChild(makeCloseButton(closeDownloadModal))
   $studio.appendChild($downloadModal)
 
+  // Permanent off-screen anchor — avoids all append/remove timing issues in Chrome
+  const $a = document.createElement('a')
+  $a.style.cssText = 'position:absolute;left:-9999px;top:-9999px;pointer-events:none'
+  document.body.appendChild($a)
+
   $downloadModal.querySelector('#download-png-btn').addEventListener('click', () => {
     if (!$badgeRaster.src) return
     const url = URL.createObjectURL(dataURItoBlob($badgeRaster.src))
-    triggerDownload('badge.png', url)
+    $a.download = 'badge.png'
+    $a.href = url
+    $a.click()
     setTimeout(() => URL.revokeObjectURL(url), 1000)
     closeDownloadModal()
   })
@@ -192,8 +199,9 @@ function initDownload() {
     const svg_xml = (new XMLSerializer()).serializeToString($badge)
     const blob = new Blob([svg_xml], { type: 'image/svg+xml' })
     const url = URL.createObjectURL(blob)
-    triggerDownload('badge.svg', url)
-    // Defer revoke — revoking immediately can cancel the download in Chrome
+    $a.download = 'badge.svg'
+    $a.href = url
+    $a.click()
     setTimeout(() => URL.revokeObjectURL(url), 1000)
     closeDownloadModal()
   })
@@ -724,14 +732,6 @@ function dataURItoBlob(dataURI) {
   return new Blob([bytes], { type: mime })
 }
 
-function triggerDownload(filename, url) {
-  const $a = document.createElement('a')
-  $a.download = filename
-  $a.href = url
-  document.body.appendChild($a)
-  $a.click()
-  document.body.removeChild($a)
-}
 
 function makeCloseButton(callback) {
   const $tmpl = importTemplate('close-button')
