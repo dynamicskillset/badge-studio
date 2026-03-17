@@ -1,0 +1,581 @@
+/* ── Nord palette ── */
+:root {
+  --nord0: #2e3440;
+  --nord1: #3b4252;
+  --nord2: #434c5e;
+  --nord3: #4c566a;
+  --nord4: #d8dee9;
+  --nord5: #e5e9f0;
+  --nord6: #eceff4;
+  --nord7: #8fbcbb;
+  --nord9: #81a1c1;
+  --nord10: #5e81ac;
+
+  /* Semantic tokens */
+  --color-bg:             var(--nord6);
+  --color-surface:        #f9fafc;
+  --color-text:           var(--nord0);
+  --color-text-secondary: var(--nord3);
+  --color-border:         var(--nord4);
+  --color-border-light:   var(--nord5);
+  --color-accent:         var(--nord10);
+  --color-accent-dark:    color-mix(in oklch, var(--nord10) 80%, black);
+  --color-accent-focus:   color-mix(in srgb, var(--nord10) 20%, transparent);
+
+  /* Typography */
+  --font-family:  'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-display: 'Lora', Georgia, serif;
+
+  /* Type scale */
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-lg:   1.125rem;
+  --text-xl:   1.5rem;
+}
+
+/* ── Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+template {
+  display: none;
+}
+
+/* ── Base ── */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-size: var(--text-base);
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Layout ── */
+.wrapper {
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+  position: relative;
+}
+
+.header {
+  margin-bottom: 1.5rem;
+  padding: 0 0.25rem;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  color: var(--color-text);
+}
+
+/* Visually hidden (accessibility) */
+.subtitle {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ── Main content card ── */
+.content {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  padding: 1.5rem;
+  position: relative;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow:
+    0 1px 3px color-mix(in srgb, var(--color-text) 8%, transparent),
+    0 4px 12px color-mix(in srgb, var(--color-text) 6%, transparent);
+}
+
+/* Dark mode — override semantic tokens so all components re-theme automatically */
+body.dark {
+  --color-bg:             var(--nord0);
+  --color-surface:        var(--nord2);
+  --color-text:           var(--nord6);
+  --color-text-secondary: var(--nord4);
+  --color-border:         var(--nord3);
+  --color-border-light:   var(--nord2);
+  background-color: var(--color-bg);
+}
+
+.dark .content {
+  background-color: var(--nord1);
+  border-color: var(--nord2);
+}
+
+/* ── Icon buttons (settings / about) ── */
+.content .settings,
+.content .about {
+  position: absolute;
+  bottom: 0.375rem;
+  font-size: 1.25rem;
+  border: none;
+  background: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  padding: 0.25em;
+  border-radius: 4px;
+  transition: color 0.15s ease;
+}
+
+.content .settings { right: 0.375rem; }
+.content .about    { right: 0.375rem; }
+
+.content .settings:focus-visible,
+.content .settings:hover,
+.content .about:focus-visible,
+.content .about:hover {
+  color: var(--color-accent);
+  outline: none;
+}
+
+/* ── Form panel ── */
+#input {
+  flex: 0 0 280px;
+  min-width: 240px;
+}
+
+/* ── Output area ── */
+#output-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+#output {
+  width: 512px;
+  height: 512px;
+}
+
+/* ── Download button ── */
+#download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.5em 1.25em;
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  background: var(--color-accent);
+  color: var(--nord6);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+#download-btn:hover {
+  background: var(--color-accent-dark);
+}
+
+#download-btn:focus-visible {
+  background: var(--color-accent-dark);
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+#download-btn.hidden {
+  display: none;
+}
+
+/* ── Download modal panel ── */
+.download-panel {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.download-option {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem 1rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  font: inherit;
+  color: var(--color-text);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.download-option:hover,
+.download-option:focus-visible {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-focus);
+  outline: none;
+}
+
+.download-option-icon {
+  font-size: 2rem;
+  color: var(--color-accent);
+}
+
+.download-option-format {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.download-option-desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+/* ── About panel ── */
+.about-panel {
+  font-size: var(--text-sm);
+  line-height: 1.65;
+}
+
+.about-panel h3 {
+  margin: 1.25em 0 0.4em;
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.about-panel h3:first-child {
+  margin-top: 0;
+}
+
+.about-panel p {
+  margin: 0 0 0.75em;
+  color: var(--color-text-secondary);
+}
+
+.about-panel a {
+  color: var(--color-accent);
+}
+
+.about-panel a:hover {
+  text-decoration: none;
+}
+
+/* ── Form labels / items ── */
+.label {
+  display: block;
+  margin: 0 0 0.25em;
+  font-weight: 600;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.item {
+  margin: 0 0 1em;
+  min-height: 2em;
+}
+
+.item label {
+  font-size: var(--text-sm);
+  display: block;
+}
+
+/* ── Select / input base styles ── */
+select, input[type="search"], input[type="text"] {
+  font: inherit;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  padding: 0.35em 0.6em;
+  color-scheme: light;
+}
+
+body.dark select,
+body.dark input[type="search"],
+body.dark input[type="text"] {
+  color-scheme: dark;
+}
+
+select:focus-visible,
+input[type="search"]:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+  border-color: var(--color-accent);
+}
+
+/* ── Overlay dialogs ── */
+.overlay {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  overflow: auto;
+  z-index: 10;
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+.overlay .header {
+  position: absolute;
+  top: 0.5em;
+  left: 0.5em;
+  right: 0.5em;
+  height: 2em;
+  border-bottom: 1px solid var(--color-border);
+  margin: 0;
+  padding: 1em;
+}
+
+.overlay .header .title {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+  letter-spacing: 0;
+}
+
+.overlay .header label {
+  margin-right: 1em;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.overlay .header input {
+  font: inherit;
+  font-size: var(--text-sm);
+  width: 25%;
+}
+
+.overlay .header button {
+  cursor: pointer;
+  font-size: 1.75em;
+  border: none;
+  background: none;
+  color: var(--color-text-secondary);
+  position: absolute;
+  top: 50%;
+  right: 0;
+  margin-top: -0.66em;
+  transition: color 0.15s ease;
+}
+
+.overlay .header button:hover,
+.overlay .header button:focus-visible {
+  color: var(--color-accent);
+  outline: none;
+}
+
+.overlay .hidden {
+  position: absolute;
+  left: -99em;
+}
+
+.overlay .panel {
+  position: absolute;
+  top: 5em;
+  left: 0.5em;
+  right: 0.5em;
+  bottom: 0.5em;
+  overflow: auto;
+  margin: 0;
+  padding: 0.5em;
+}
+
+/* ── Glyph selector grid ── */
+.overlay ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.overlay li {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+}
+
+.overlay li label {
+  font-size: 3.5em;
+  width: 1.5em;
+  height: 1em;
+  line-height: 1em;
+  padding: 0.25em 0;
+  cursor: pointer;
+  border-radius: 8px;
+  text-align: center;
+  color: var(--color-text-secondary);
+  transition: background 0.1s ease, color 0.1s ease;
+}
+
+.overlay .fa-:before {
+  content: "\00A0";
+}
+
+.overlay li :focus-visible + label,
+.overlay li label:hover {
+  background: var(--color-accent-focus);
+  color: var(--color-accent);
+}
+
+.overlay li :focus-visible + label {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.overlay li :checked + label {
+  background: color-mix(in srgb, var(--color-accent) 15%, transparent);
+  color: var(--color-accent);
+}
+
+/* ── Settings helper text ── */
+.overlay .panel small {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin: 0.25em 0 0.6em;
+  line-height: 1.5;
+}
+
+/* ── Glyph search button ── */
+#search-glyphs {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.35em 0.9em;
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  background: var(--color-surface);
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 0.4em;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+#search-glyphs:hover,
+#search-glyphs:focus-visible {
+  background: var(--color-accent);
+  color: var(--nord6);
+  outline: none;
+}
+
+/* ── Colour inputs ── */
+input[type="color"] {
+  width: 2.5em;
+  height: 1.75em;
+  padding: 2px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-surface);
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+#custom-palette label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin-right: 0.75em;
+  margin-bottom: 0.5em;
+}
+
+/* ── Raster preview ── */
+#raster {
+  display: block;
+  width: 100%;
+  transform-origin: 50% 25%;
+  max-width: 100%;
+}
+
+/* ── Empty state placeholder ── */
+#output:not(:has(img[src])) {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'%3E%3Cpolygon points='256,48 432,152 432,360 256,464 80,360 80,152' fill='none' stroke='%23d8dee9' stroke-width='3' stroke-dasharray='12 8'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 80%;
+}
+
+/* ── Responsive ── */
+@media screen and (max-width: 800px) {
+  .wrapper {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .header {
+    margin-bottom: 0.75rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .content .about {
+    bottom: auto;
+    top: 0.375rem;
+  }
+
+  #output-area {
+    flex: none;
+    width: 100%;
+    align-self: center;
+  }
+
+  #output {
+    width: 100%;
+    max-width: 512px;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  #input {
+    flex: none;
+    width: 100%;
+  }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
