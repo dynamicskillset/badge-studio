@@ -181,7 +181,14 @@ function initDownload() {
 
   $downloadModal.querySelector('#download-png-btn').addEventListener('click', () => {
     if (!$badgeRaster.src) return
-    triggerDownload('badge.png', $badgeRaster.src)
+    // Convert data URI to blob URL — Chrome won't download bare data URIs
+    fetch($badgeRaster.src)
+      .then(r => r.blob())
+      .then(blob => {
+        const url = URL.createObjectURL(blob)
+        triggerDownload('badge.png', url)
+        setTimeout(() => URL.revokeObjectURL(url), 1000)
+      })
     closeDownloadModal()
   })
 
@@ -191,7 +198,8 @@ function initDownload() {
     const blob = new Blob([svg_xml], { type: 'image/svg+xml' })
     const url = URL.createObjectURL(blob)
     triggerDownload('badge.svg', url)
-    URL.revokeObjectURL(url)
+    // Defer revoke — revoking immediately can cancel the download in Chrome
+    setTimeout(() => URL.revokeObjectURL(url), 1000)
     closeDownloadModal()
   })
 }
