@@ -307,7 +307,6 @@ select, input[type="search"], input[type="text"] {
   border-radius: 5px;
   padding: 0.35em 0.6em;
   color-scheme: light;
-  width: 100%;
 }
 
 /* Icon row: select + browse button side by side */
