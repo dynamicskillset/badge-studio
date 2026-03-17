@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1200">
+  <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+  <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Lora:wght@600&family=Plus+Jakarta+Sans:wght@400;600&display=swap">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 1200px;
+      height: 630px;
+      overflow: hidden;
+      background: #ECEFF4;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 80px;
+      gap: 40px;
+    }
+
+    .left {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      flex: 1;
+    }
+
+    .eyebrow {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #5E81AC;
+    }
+
+    h1 {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 72px;
+      font-weight: 600;
+      line-height: 1.05;
+      color: #2E3440;
+    }
+
+    .desc {
+      font-size: 22px;
+      font-weight: 400;
+      color: #4C566A;
+      line-height: 1.5;
+      max-width: 460px;
+    }
+
+    .meta {
+      margin-top: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #5E81AC;
+    }
+
+    .badge-wrap {
+      flex-shrink: 0;
+      width: 440px;
+      height: 440px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="left">
+    <div class="eyebrow">Dynamic Skillset</div>
+    <h1>Badge<br>Studio</h1>
+    <p class="desc">Design and download custom Open Badge images — pick a template, palette, and icon.</p>
+    <div class="meta">dynamicskillset.com/badge-studio</div>
+  </div>
+
+  <div class="badge-wrap">
+    <!--
+      Hexagon vertices (viewBox 0 0 512 512):
+        Outer border:  256,22  468,136  468,376  256,490  44,376  44,136
+        Inner bg:      256,54  440,158  440,354  256,458  72,354  72,158
+        Stitching:     256,72  422,170  422,342  256,440  90,342  90,170
+
+      Each <polygon> is replaced with a rounded <path> using quadratic bezier
+      corners (Q control-point end-point). Corner radius: outer=20, inner=16, stitch=12.
+    -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="440" height="440">
+      <defs>
+        <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#3b5278"/>
+          <stop offset="100%" stop-color="#2d4268"/>
+        </linearGradient>
+        <linearGradient id="glossGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="rgba(255,255,255,0.18)"/>
+          <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+        </linearGradient>
+        <filter id="shadow" x="-15%" y="-15%" width="130%" height="130%">
+          <feDropShadow dx="0" dy="8" stdDeviation="18" flood-color="rgba(0,0,0,0.28)"/>
+        </filter>
+      </defs>
+
+      <!-- Outer border ring — r=20 rounded corners -->
+      <path d="
+        M 238.4,31.5
+        Q 256,22 273.6,31.5
+        L 450.4,126.5
+        Q 468,136 468,156
+        L 468,356
+        Q 468,376 450.4,385.5
+        L 273.6,480.5
+        Q 256,490 238.4,480.5
+        L 61.6,385.5
+        Q 44,376 44,356
+        L 44,156
+        Q 44,136 61.6,126.5
+        Z"
+        fill="#81A1C1" filter="url(#shadow)"/>
+
+      <!-- Inner background — r=16 rounded corners -->
+      <path d="
+        M 242.1,61.9
+        Q 256,54 269.9,61.9
+        L 426.1,150.1
+        Q 440,158 440,174
+        L 440,338
+        Q 440,354 426.1,361.9
+        L 269.9,450.1
+        Q 256,458 242.1,450.1
+        L 85.9,361.9
+        Q 72,354 72,338
+        L 72,174
+        Q 72,158 85.9,150.1
+        Z"
+        fill="url(#bgGrad)"/>
+
+      <!-- Stitching dashes — r=12 rounded corners -->
+      <path d="
+        M 245.7,78.1
+        Q 256,72 266.3,78.1
+        L 411.7,163.9
+        Q 422,170 422,182
+        L 422,330
+        Q 422,342 411.7,348.1
+        L 266.3,433.9
+        Q 256,440 245.7,433.9
+        L 100.3,348.1
+        Q 90,342 90,330
+        L 90,182
+        Q 90,170 100.3,163.9
+        Z"
+        fill="none" stroke="#D8DEE9" stroke-width="3" stroke-dasharray="14 9"
+        stroke-linejoin="round"/>
+
+      <!-- Gloss overlay — top half of inner hexagon, r=16 on top corners -->
+      <path d="
+        M 242.1,61.9
+        Q 256,54 269.9,61.9
+        L 426.1,150.1
+        Q 440,158 440,174
+        L 440,256
+        L 72,256
+        L 72,174
+        Q 72,158 85.9,150.1
+        Z"
+        fill="url(#glossGrad)"/>
+
+      <!-- Star icon -->
+      <polygon points="256,142 284,222 370,222 302,270 328,352 256,306 184,352 210,270 142,222 228,222"
+               fill="white" opacity="0.95"/>
+    </svg>
+  </div>
+</body>
+</html>
