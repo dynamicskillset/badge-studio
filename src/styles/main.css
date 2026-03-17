@@ -105,9 +105,7 @@ body {
 .content {
   display: flex;
   gap: 2rem;
-  align-items: stretch;
-  flex: 1;
-  min-height: 0;
+  align-items: flex-start;
   padding: 1.5rem;
   position: relative;
   background-color: var(--color-surface);
@@ -175,18 +173,14 @@ body.dark {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 0.75rem;
-  flex: 1;
-  min-width: 0;
-  min-height: 0;
+  flex-shrink: 0;
 }
 
 #output {
-  width: 100%;
-  max-width: 512px;
+  /* Scale down on short viewports; 16rem ≈ header + footer + wrapper/card padding */
+  width: min(512px, calc(100vh - 16rem));
   aspect-ratio: 1;
-  min-height: 0;
 }
 
 /* ── Download button ── */
