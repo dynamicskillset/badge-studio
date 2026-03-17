@@ -47,6 +47,7 @@ export function initStudio() {
 
   initAbout()
   initDownload()
+  initRandom()
   initPalettes()
   initOptions()
   initGlyphs()
@@ -71,6 +72,41 @@ export function initStudio() {
   }, true)
 
   updateTemplate().catch(showError)
+}
+
+// ==[ Random ]===============================================================
+
+function initRandom() {
+  const $randomBtn = document.getElementById('random-btn')
+  if ($randomBtn) $randomBtn.addEventListener('click', () => randomize().catch(showError))
+}
+
+async function randomize() {
+  $template.selectedIndex = Math.floor(Math.random() * $template.options.length)
+
+  // Exclude the last "Custom" option
+  $palette.selectedIndex = Math.floor(Math.random() * ($palette.options.length - 1))
+
+  $mask.selectedIndex = Math.floor(Math.random() * $mask.options.length)
+
+  // Skip index 0 ("None") — always pick an icon
+  $glyph.selectedIndex = 1 + Math.floor(Math.random() * ($glyph.options.length - 1))
+
+  // updateTemplate chains: extractOptions → setCustomPalette → updatePalette → updateGlyph → rasterize
+  await updateTemplate()
+
+  // Randomise options — they're rebuilt by extractOptions inside updateTemplate
+  for (const option in options) {
+    if (Object.prototype.hasOwnProperty.call(options, option)) {
+      options[option] = Math.random() < 0.5
+      const $checkbox = document.querySelector(`input[name="${option}"]`)
+      if ($checkbox) $checkbox.checked = options[option]
+    }
+  }
+  await setOptions()
+
+  // Mask is separate from the template chain
+  await updateMask()
 }
 
 // ==[ Settings ]=============================================================
