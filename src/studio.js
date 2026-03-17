@@ -181,10 +181,7 @@ function initDownload() {
 
   $downloadModal.querySelector('#download-png-btn').addEventListener('click', () => {
     if (!$badgeRaster.src) return
-    const $a = document.createElement('a')
-    $a.download = 'badge.png'
-    $a.href = $badgeRaster.src
-    $a.click()
+    triggerDownload('badge.png', $badgeRaster.src)
     closeDownloadModal()
   })
 
@@ -193,10 +190,7 @@ function initDownload() {
     const svg_xml = (new XMLSerializer()).serializeToString($badge)
     const blob = new Blob([svg_xml], { type: 'image/svg+xml' })
     const url = URL.createObjectURL(blob)
-    const $a = document.createElement('a')
-    $a.download = 'badge.svg'
-    $a.href = url
-    $a.click()
+    triggerDownload('badge.svg', url)
     URL.revokeObjectURL(url)
     closeDownloadModal()
   })
@@ -716,6 +710,15 @@ function importTemplate(name, builder) {
   const $tmpl = document.getElementById(name + '-template')
   if (typeof builder === 'function') builder($tmpl.content)
   return document.importNode($tmpl.content, true)
+}
+
+function triggerDownload(filename, url) {
+  const $a = document.createElement('a')
+  $a.download = filename
+  $a.href = url
+  document.body.appendChild($a)
+  $a.click()
+  document.body.removeChild($a)
 }
 
 function makeCloseButton(callback) {
