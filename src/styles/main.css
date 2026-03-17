@@ -43,9 +43,14 @@ template {
 }
 
 /* ── Base ── */
+html {
+  height: 100%;
+}
+
 body {
   margin: 0;
   padding: 0;
+  height: 100%;
   background-color: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-family);
@@ -53,19 +58,28 @@ body {
   font-weight: 400;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ── Layout ── */
 .wrapper {
+  flex: 1;
+  min-height: 0;
   max-width: 940px;
+  width: 100%;
   margin: 0 auto;
-  padding: 2rem 1.25rem;
+  padding: 1.5rem 1.25rem;
   position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   padding: 0 0.25rem;
+  flex-shrink: 0;
 }
 
 .title {
@@ -91,7 +105,9 @@ body {
 .content {
   display: flex;
   gap: 2rem;
-  align-items: flex-start;
+  align-items: stretch;
+  flex: 1;
+  min-height: 0;
   padding: 1.5rem;
   position: relative;
   background-color: var(--color-surface);
@@ -122,7 +138,7 @@ body.dark {
 .content .settings,
 .content .about {
   position: absolute;
-  bottom: 0.375rem;
+  top: 0.375rem;
   font-size: 1.25rem;
   border: none;
   background: none;
@@ -145,6 +161,10 @@ body.dark {
 }
 
 /* ── Form panel ── */
+#input select {
+  width: 100%;
+}
+
 #input {
   flex: 0 0 280px;
   min-width: 240px;
@@ -155,13 +175,18 @@ body.dark {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 0.75rem;
-  flex-shrink: 0;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
 }
 
 #output {
-  width: 512px;
-  height: 512px;
+  width: 100%;
+  max-width: 512px;
+  aspect-ratio: 1;
+  min-height: 0;
 }
 
 /* ── Download button ── */
@@ -319,7 +344,7 @@ select, input[type="search"], input[type="text"] {
 .item:has(#studio-glyph) select {
   flex: 1;
   min-width: 0;
-  width: auto;
+  width: 0; /* flex-basis override so flex: 1 drives the width */
 }
 
 #search-glyphs {
@@ -562,11 +587,6 @@ input[type="color"] {
     gap: 1rem;
   }
 
-  .content .about {
-    bottom: auto;
-    top: 0.375rem;
-  }
-
   #output-area {
     flex: none;
     width: 100%;
@@ -590,28 +610,27 @@ input[type="color"] {
 .footer {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
   margin-top: 0.75rem;
-  padding: 0 0.25rem;
+  padding: 0.25rem 0;
   font-size: var(--text-sm);
   color: var(--color-text-secondary);
 }
 
-.footer-version {
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.02em;
+.footer-sep {
+  color: var(--color-border);
 }
 
 .footer-link {
   color: var(--color-text-secondary);
   text-decoration: none;
-  border-bottom: 1px solid var(--color-border);
-  transition: color 0.15s ease, border-color 0.15s ease;
+  transition: color 0.15s ease;
 }
 
 .footer-link:hover {
   color: var(--color-accent);
-  border-bottom-color: var(--color-accent);
 }
 
 /* ── Reduced motion ── */
