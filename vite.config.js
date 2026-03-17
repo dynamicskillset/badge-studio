@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   root: '.',
   publicDir: 'public',
-})
+  base: mode === 'production' ? '/badge-studio/' : '/',
+}))
