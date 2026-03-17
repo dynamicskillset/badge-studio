@@ -181,14 +181,9 @@ function initDownload() {
 
   $downloadModal.querySelector('#download-png-btn').addEventListener('click', () => {
     if (!$badgeRaster.src) return
-    // Convert data URI to blob URL — Chrome won't download bare data URIs
-    fetch($badgeRaster.src)
-      .then(r => r.blob())
-      .then(blob => {
-        const url = URL.createObjectURL(blob)
-        triggerDownload('badge.png', url)
-        setTimeout(() => URL.revokeObjectURL(url), 1000)
-      })
+    const url = URL.createObjectURL(dataURItoBlob($badgeRaster.src))
+    triggerDownload('badge.png', url)
+    setTimeout(() => URL.revokeObjectURL(url), 1000)
     closeDownloadModal()
   })
 
@@ -718,6 +713,15 @@ function importTemplate(name, builder) {
   const $tmpl = document.getElementById(name + '-template')
   if (typeof builder === 'function') builder($tmpl.content)
   return document.importNode($tmpl.content, true)
+}
+
+function dataURItoBlob(dataURI) {
+  const [header, data] = dataURI.split(',')
+  const mime = header.match(/:(.*?);/)[1]
+  const binary = atob(data)
+  const bytes = new Uint8Array(binary.length)
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i)
+  return new Blob([bytes], { type: mime })
 }
 
 function triggerDownload(filename, url) {
